@@ -122,6 +122,13 @@ class unetr_pp_trainer_toothfairy2(unetr_pp_trainer_synapse):
             self.dataset_val[i] = self.dataset[i]
 
     def run_online_evaluation(self, output, target):
+        if self.deep_supervision:
+            target = target[0]
+            output = output[0]
+        else:
+            target = target
+            output = output
+            
         with torch.no_grad():
             num_classes = output.shape[1]
             output_softmax = softmax_helper(output)
