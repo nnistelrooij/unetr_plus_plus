@@ -1,4 +1,6 @@
 from collections import OrderedDict
+import os
+from pathlib import Path
 
 from batchgenerators.utilities.file_and_folder_operations import *
 from fvcore.nn import FlopCountAnalysis
@@ -14,9 +16,12 @@ from unetr_pp.utilities.tensor_utilities import sum_tensor
 
 class unetr_pp_trainer_toothfairy2(unetr_pp_trainer_synapse):
 
-    def __init__(self, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
+    def __init__(self, plans_file, *args, **kwargs):
+        
+        plans_file = Path(os.environ['nnFormer_preprocessed']) / (
+            'Task112_ToothFairy2/nnFormerPlansv2.1_plans_3D.pkl'
+        )
+        super().__init__(plans_file, *args, **kwargs)
 
         self.crop_size = [80, 160, 160]
 
@@ -157,8 +162,8 @@ class unetr_pp_trainer_toothfairy2(unetr_pp_trainer_synapse):
             self.online_eval_fp.append(list(fp_hard))
             self.online_eval_fn.append(list(fn_hard))
 
-    def setup_DA_params(self):
-        super().setup_DA_params()
+    # def setup_DA_params(self):
+    #     super().setup_DA_params()
 
-        self.data_aug_params['do_mirror'] = True
-        self.data_aug_params['mirror_axes'] = (0, 1)
+    #     self.data_aug_params['do_mirror'] = True
+    #     self.data_aug_params['mirror_axes'] = (0, 1)
